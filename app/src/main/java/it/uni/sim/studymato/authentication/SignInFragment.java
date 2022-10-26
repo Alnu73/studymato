@@ -96,6 +96,5 @@ public class SignInFragment extends Fragment {
     private void updateUI(FirebaseUser user) {
         Intent intent = new Intent(requireActivity(), MainActivity.class);
         startActivity(intent);
-
     }
 }
