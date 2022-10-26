@@ -2,4 +2,10 @@
     <string name="app_name">studymato</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="already_have_an_account_login">Already have an account? Sign in</string>
+    <string name="dont_have_an_account_login">Don\'t have an account? Sign up</string>
+    <string name="signUp">signUp</string>
+    <string name="enter_your_email">Enter your Email</string>
+    <string name="enter_your_password">Enter your Password</string>
+    <string name="signIn">Sign In</string>
 </resources>
