@@ -8,4 +8,5 @@
     <string name="enter_your_email">Enter your Email</string>
     <string name="enter_your_password">Enter your Password</string>
     <string name="signIn">Sign In</string>
+    <string name="enter_your_name">Enter your name</string>
 </resources>

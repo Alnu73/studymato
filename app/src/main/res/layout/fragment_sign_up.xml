@@ -1,14 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<!-- Linear Layout with vertical orientation and other properties -->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:gravity="center_vertical"
+    android:orientation="vertical"
+    android:padding="15dp"
     tools:context=".authentication.SignUpFragment">
 
-    <!-- TODO: Update blank fragment layout -->
+    <!-- TextView for heading -->
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Register" />
 
-</FrameLayout>
+    <!-- Edit text for name -->
+    <EditText
+        android:id="@+id/displayname"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/enter_your_name" />
+    <!-- Edit text for email -->
+    <EditText
+        android:id="@+id/email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/enter_your_email" />
+
+    <!-- Edit text for password -->
+    <EditText
+        android:id="@+id/passwd"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/enter_your_password"
+        android:inputType="textPassword" />
+    <!-- TODO: Add confirm password -->
+    <!-- Button for register with text "Register" -->
+    <Button
+        android:id="@+id/btnregister"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/signUp" />
+
+    <!-- ProgressBar for loading time -->
+    <ProgressBar
+        android:id="@+id/progressbar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone" />
+    <TextView
+        android:id="@+id/tvRedirectLogin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:layout_margin="10dp"
+        android:text="@string/already_have_an_account_login"
+        android:textColor="#18206F"
+        android:textSize="16sp" />
+</LinearLayout>
