@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "621624187609",
+    "project_id": "studymato",
+    "storage_bucket": "studymato.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:621624187609:android:acdf6fe175d0d17efc7cc8",
+        "android_client_info": {
+          "package_name": "it.uni.sim.studymato"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "621624187609-ai4d2dja2mj5u073f0uhnnc2ke9abqfl.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "it.uni.sim.studymato",
+            "certificate_hash": "48098adedd69fb0e68d8ec1289afc4c32ca55953"
+          }
+        },
+        {
+          "client_id": "621624187609-jafc5kbr1387ciev0m6imqatf51npr8j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAMPDxbLhj6LP9v6NUDP_6SkNwG_8rDE1I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "621624187609-jafc5kbr1387ciev0m6imqatf51npr8j.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
