@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/auth_navigation_graph"
     app:startDestination="@id/signInFragment">
-
     <fragment
         android:id="@+id/signInFragment"
         android:name="it.uni.sim.studymato.authentication.SignInFragment"
