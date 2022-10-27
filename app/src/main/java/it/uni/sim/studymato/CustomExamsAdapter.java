@@ -1,5 +1,6 @@
 package it.uni.sim.studymato;
 
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -19,11 +20,15 @@ public class CustomExamsAdapter extends RecyclerView.Adapter<CustomExamsAdapter.
     @NonNull
     @Override
     public CustomExamsAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return null;
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.rv_row_item, parent, false);
+
+        return new ViewHolder(view);
+
     }
 
     @Override
-    public void onBindViewHolder(@NonNull CustomExamsAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull CustomExamsAdapter.ViewHolder holder, final int position) {
 
     }
 
