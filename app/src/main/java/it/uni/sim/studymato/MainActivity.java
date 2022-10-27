@@ -13,8 +13,12 @@ import android.preference.PreferenceManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.ArrayList;
+import java.util.Date;
+
 import it.uni.sim.studymato.authentication.AuthenticationActivity;
 import it.uni.sim.studymato.databinding.ActivityMainBinding;
+import it.uni.sim.studymato.model.Exam;
 import it.uni.sim.studymato.onboarding.OnboardingActivity;
 import it.uni.sim.studymato.onboarding.OnboardingPageFragment;
 
@@ -65,6 +69,5 @@ public class MainActivity extends AppCompatActivity {
             // The user hasn't seen the OnboardingSupportFragment yet, so show it
             startActivity(new Intent(this, OnboardingActivity.class));
         }
-
     }
 }

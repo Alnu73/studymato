@@ -31,7 +31,7 @@ public class CustomExamsAdapter extends RecyclerView.Adapter<CustomExamsAdapter.
     }
 
     public CustomExamsAdapter(Exam[] dataSet) {
-        this.localDataSet = dataSet;
+        localDataSet = dataSet;
     }
 
     @NonNull
@@ -39,13 +39,11 @@ public class CustomExamsAdapter extends RecyclerView.Adapter<CustomExamsAdapter.
     public CustomExamsAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.rv_row_item, parent, false);
-
         return new ViewHolder(view);
-
     }
 
     @Override
-    public void onBindViewHolder(@NonNull CustomExamsAdapter.ViewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.getExamTextView().setText(localDataSet[position].getName());
     }
 
