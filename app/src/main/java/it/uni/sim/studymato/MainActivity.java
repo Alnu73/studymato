@@ -3,13 +3,17 @@ package it.uni.sim.studymato;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import it.uni.sim.studymato.authentication.AuthenticationActivity;
 import it.uni.sim.studymato.databinding.ActivityMainBinding;
+import it.uni.sim.studymato.onboarding.OnboardingActivity;
+import it.uni.sim.studymato.onboarding.OnboardingPageFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -23,6 +27,8 @@ public class MainActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        checkAndStartOnboarding();
     }
 
     @Override
@@ -39,5 +45,18 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         binding = null;
+    }
+
+    private void checkAndStartOnboarding() {
+        SharedPreferences sharedPreferences =
+                PreferenceManager.getDefaultSharedPreferences(this);
+        // Check if we need to display our OnboardingSupportFragment
+        if (!sharedPreferences.getBoolean(
+                OnboardingPageFragment.COMPLETED_ONBOARDING
+                , false)) {
+            // The user hasn't seen the OnboardingSupportFragment yet, so show it
+            startActivity(new Intent(this, OnboardingActivity.class));
+        }
+
     }
 }
