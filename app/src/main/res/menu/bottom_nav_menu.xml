@@ -1,4 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-
+    <item
+        android:id="@+id/dashboardFragment"
+        android:title="@string/dashboard"
+        android:icon="@drawable/ic_dashboard_foreground"/>
+    <item
+        android:id="@+id/examsFragment"
+        android:title="@string/exams"
+        android:icon="@drawable/ic_exams_foreground"/>
+    <item
+        android:id="@+id/settingsFragment"
+        android:title="@string/settings"
+        android:icon="@drawable/ic_settings_foreground"/>
 </menu>

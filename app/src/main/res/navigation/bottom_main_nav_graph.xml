@@ -1,6 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/bottom_main_nav_graph">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/bottom_main_nav_graph"
+    app:startDestination="@id/dashboardFragment">
 
+    <fragment
+        android:id="@+id/dashboardFragment"
+        android:name="it.uni.sim.studymato.DashboardFragment"
+        android:label="fragment_dashboard"
+        tools:layout="@layout/fragment_dashboard" >
+        <action
+            android:id="@+id/action_dashboardFragment_to_examsFragment"
+            app:destination="@id/examsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/examsFragment"
+        android:name="it.uni.sim.studymato.ExamsFragment"
+        android:label="fragment_exams"
+        tools:layout="@layout/fragment_exams" >
+        <action
+            android:id="@+id/action_examsFragment_to_dashboardFragment"
+            app:destination="@id/dashboardFragment" />
+        <action
+            android:id="@+id/action_examsFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="it.uni.sim.studymato.SettingsFragment"
+        android:label="fragment_settings"
+        tools:layout="@layout/fragment_settings" >
+        <action
+            android:id="@+id/action_settingsFragment_to_examsFragment"
+            app:destination="@id/examsFragment" />
+    </fragment>
 </navigation>
