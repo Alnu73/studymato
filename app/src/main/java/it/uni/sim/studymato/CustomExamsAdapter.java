@@ -3,18 +3,35 @@ package it.uni.sim.studymato;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import it.uni.sim.studymato.model.Exam;
+
 public class CustomExamsAdapter extends RecyclerView.Adapter<CustomExamsAdapter.ViewHolder> {
 
+    //TODO: Make it template?
+    private Exam[] localDataSet;
+
     public static class ViewHolder extends RecyclerView.ViewHolder {
+
+        private final TextView examTextView;
 
         public ViewHolder(View view) {
             super(view);
             // Define click listener for the ViewHolder's View
+            examTextView = view.findViewById(R.id.examTextView);
         }
+
+        public TextView getExamTextView() {
+            return examTextView;
+        }
+    }
+
+    public CustomExamsAdapter(Exam[] dataSet) {
+        this.localDataSet = dataSet;
     }
 
     @NonNull
@@ -29,11 +46,11 @@ public class CustomExamsAdapter extends RecyclerView.Adapter<CustomExamsAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull CustomExamsAdapter.ViewHolder holder, final int position) {
-
+        holder.getExamTextView().setText(localDataSet[position].getName());
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return localDataSet.length;
     }
 }
