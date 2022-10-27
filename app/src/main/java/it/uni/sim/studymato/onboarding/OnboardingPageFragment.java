@@ -12,6 +12,8 @@ import it.uni.sim.studymato.R;
 
 public class OnboardingPageFragment extends Fragment {
 
+    public static final String COMPLETED_ONBOARDING = "completed_onboarding";
+
     public OnboardingPageFragment() {
         // Required empty public constructor
     }
