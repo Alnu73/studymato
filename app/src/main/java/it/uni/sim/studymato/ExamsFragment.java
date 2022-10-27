@@ -8,7 +8,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import it.uni.sim.studymato.databinding.FragmentExamsBinding;
+
 public class ExamsFragment extends Fragment {
+
+    FragmentExamsBinding binding = null;
 
     public ExamsFragment() {
         // Required empty public constructor
@@ -23,6 +27,13 @@ public class ExamsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_exams, container, false);
+        binding = FragmentExamsBinding.inflate(inflater, container, false);
+        return binding.getRoot();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        binding = null;
     }
 }

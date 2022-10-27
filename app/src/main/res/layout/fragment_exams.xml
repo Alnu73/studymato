@@ -11,4 +11,9 @@
         android:layout_height="match_parent"
         android:text="Exams" />
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvExams"
+        android:layout_width="0dp"
+        android:layout_height="0dp" />
+
 </FrameLayout>
