@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "621624187609",
+    "firebase_url": "https://studymato-default-rtdb.europe-west1.firebasedatabase.app",
     "project_id": "studymato",
     "storage_bucket": "studymato.appspot.com"
   },
