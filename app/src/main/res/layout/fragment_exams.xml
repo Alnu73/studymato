@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginBottom="@dimen/bottomNavBarHeight"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ExamsFragment">
 
     <!-- TODO: Update blank fragment layout -->
@@ -14,6 +16,20 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvExams"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:paddingBottom="48dp"
+        android:clipToPadding="false"
+        />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:src="@drawable/ic_baseline_add_24"
+        android:contentDescription="@string/addNewItem"
+        android:layout_margin="16dp"
+        />
+
 
 </FrameLayout>
