@@ -8,12 +8,14 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
+
 import it.uni.sim.studymato.model.Exam;
 
 public class CustomExamsAdapter extends RecyclerView.Adapter<CustomExamsAdapter.ViewHolder> {
 
     //TODO: Make it template?
-    private Exam[] localDataSet;
+    private ArrayList<Exam> localDataSet;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
@@ -30,7 +32,7 @@ public class CustomExamsAdapter extends RecyclerView.Adapter<CustomExamsAdapter.
         }
     }
 
-    public CustomExamsAdapter(Exam[] dataSet) {
+    public CustomExamsAdapter(ArrayList<Exam> dataSet) {
         localDataSet = dataSet;
     }
 
@@ -44,11 +46,11 @@ public class CustomExamsAdapter extends RecyclerView.Adapter<CustomExamsAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.getExamTextView().setText(localDataSet[position].getName());
+        holder.getExamTextView().setText(localDataSet.get(position).getName());
     }
 
     @Override
     public int getItemCount() {
-        return localDataSet.length;
+        return localDataSet.size();
     }
 }
