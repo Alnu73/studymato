@@ -6,9 +6,9 @@ public class Exam {
 
     private String name;
     private int credits;
-    private Date dueDate;
+    private Long dueDate;
 
-    public Exam(String name, int credits, Date dueDate) {
+    public Exam(String name, int credits, Long dueDate) {
         this.name = name;
         this.credits = credits;
         this.dueDate = dueDate;
@@ -22,7 +22,7 @@ public class Exam {
         return credits;
     }
 
-    public Date getDueDate() {
+    public Long getDueDate() {
         return dueDate;
     }
 
@@ -34,7 +34,7 @@ public class Exam {
         this.credits = credits;
     }
 
-    public void setDueDate(Date dueDate) {
+    public void setDueDate(Long dueDate) {
         this.dueDate = dueDate;
     }
 }

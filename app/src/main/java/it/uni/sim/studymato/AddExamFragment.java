@@ -13,12 +13,24 @@ import android.view.ViewGroup;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.datepicker.MaterialDatePicker;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 import it.uni.sim.studymato.databinding.FragmentAddExamBinding;
+import it.uni.sim.studymato.model.Exam;
 
 public class AddExamFragment extends Fragment {
 
     FragmentAddExamBinding binding = null;
+    final FirebaseDatabase database = FirebaseDatabase.getInstance();
+    DatabaseReference ref = database.getReference();
+
 
     public AddExamFragment() {
         // Required empty public constructor
@@ -46,7 +58,16 @@ public class AddExamFragment extends Fragment {
         });
 
         datePicker.addOnPositiveButtonClickListener(v -> {
-            System.out.println("Selected date: " + datePicker.getHeaderText());
+            binding.dueDateEditText.setText(datePicker.getHeaderText());
+        });
+
+        binding.confirmButton.setOnClickListener(v -> {
+            DatabaseReference examsRef = ref.child("exams");
+            DatabaseReference examsRef2 = examsRef.push();
+            examsRef2.setValue(new Exam(binding.examNameEditText.getText().toString(),
+                    Integer.parseInt(binding.numberOfCreditsEditText.getText().toString()),
+                    datePicker.getSelection()));
+            closeWindow();
         });
 
         return binding.getRoot();
@@ -66,15 +87,17 @@ public class AddExamFragment extends Fragment {
         ) {
             @Override
             public void handleOnBackPressed() {
-                requireActivity().getSupportFragmentManager().popBackStack();
-                toggleBottomNavigationView();
+                closeWindow();
             }
         };
         requireActivity().getOnBackPressedDispatcher().addCallback(
                 this, callback);
     }
 
-
+    private void closeWindow() {
+        requireActivity().getSupportFragmentManager().popBackStack();
+        toggleBottomNavigationView();
+    }
 
     private void toggleBottomNavigationView() {
         BottomNavigationView bottomNavigationView = requireActivity().findViewById(R.id.bottomNavigationView);
