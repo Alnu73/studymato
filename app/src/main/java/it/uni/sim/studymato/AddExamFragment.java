@@ -16,12 +16,6 @@ import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
-
 import it.uni.sim.studymato.databinding.FragmentAddExamBinding;
 import it.uni.sim.studymato.model.Exam;
 
