@@ -3,9 +3,12 @@ package it.uni.sim.studymato;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DatabaseReference;
@@ -40,7 +43,15 @@ public class ExamsFragment extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                AddExamFragment addExamFragment = new AddExamFragment();
+                FrameLayout examsMainLayout = binding.examsMainLayout;
+                examsMainLayout.removeAllViews();
+                requireActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(
+                                R.id.examsMainLayout,
+                                addExamFragment,
+                                addExamFragment.getClass().getCanonicalName())
+                        .commit();
             }
         });
 
