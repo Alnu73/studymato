@@ -22,8 +22,8 @@ import it.uni.sim.studymato.model.Exam;
 public class AddExamFragment extends Fragment {
 
     FragmentAddExamBinding binding = null;
-    final FirebaseDatabase database = FirebaseDatabase.getInstance();
-    DatabaseReference ref = database.getReference();
+    private final FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
+    DatabaseReference ref = mDatabase.getReference();
 
 
     public AddExamFragment() {
@@ -57,8 +57,8 @@ public class AddExamFragment extends Fragment {
 
         binding.confirmButton.setOnClickListener(v -> {
             DatabaseReference examsRef = ref.child("exams");
-            DatabaseReference examsRef2 = examsRef.push();
-            examsRef2.setValue(new Exam(binding.examNameEditText.getText().toString(),
+            DatabaseReference ref = examsRef.push();
+            ref.setValue(new Exam(binding.examNameEditText.getText().toString(),
                     Integer.parseInt(binding.numberOfCreditsEditText.getText().toString()),
                     datePicker.getSelection()));
             closeWindow();

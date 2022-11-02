@@ -23,7 +23,7 @@ import it.uni.sim.studymato.databinding.FragmentExamsBinding;
 public class ExamsFragment extends Fragment {
 
     FragmentExamsBinding binding = null;
-    private DatabaseReference mDatabase;
+    private final DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();;
     CustomExamsAdapter adapter;
 
 
@@ -34,7 +34,6 @@ public class ExamsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mDatabase = FirebaseDatabase.getInstance().getReference();
     }
 
     @Override
