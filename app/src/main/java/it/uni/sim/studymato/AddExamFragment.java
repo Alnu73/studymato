@@ -6,15 +6,13 @@ import android.os.Bundle;
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.NavController;
-import androidx.navigation.NavDirections;
-import androidx.navigation.fragment.NavHostFragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.datepicker.MaterialDatePicker;
 
 import it.uni.sim.studymato.databinding.FragmentAddExamBinding;
 
@@ -37,6 +35,20 @@ public class AddExamFragment extends Fragment {
         // Inflate the layout for this fragment
         binding = FragmentAddExamBinding.inflate(inflater, container, false);
         toggleBottomNavigationView();
+
+        final MaterialDatePicker<Long> datePicker = MaterialDatePicker.Builder.datePicker()
+                .setTitleText("Pick a date")
+                .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
+                .build();
+
+        binding.dueDateTextInputLayout.setEndIconOnClickListener(v -> {
+            datePicker.show(requireActivity().getSupportFragmentManager(), "MATERIAL_DATE_PICKER");
+        });
+
+        datePicker.addOnPositiveButtonClickListener(v -> {
+            System.out.println("Selected date: " + datePicker.getHeaderText());
+        });
+
         return binding.getRoot();
     }
 
