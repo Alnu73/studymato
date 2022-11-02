@@ -4,6 +4,9 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.navigation.NavController;
+import androidx.navigation.NavDirections;
+import androidx.navigation.fragment.NavHostFragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +17,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import it.uni.sim.studymato.authentication.SignInFragmentDirections;
 import it.uni.sim.studymato.databinding.FragmentExamsBinding;
 
 public class ExamsFragment extends Fragment {
@@ -43,15 +47,11 @@ public class ExamsFragment extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AddExamFragment addExamFragment = new AddExamFragment();
-                FrameLayout examsMainLayout = binding.examsMainLayout;
-                examsMainLayout.removeAllViews();
-                requireActivity().getSupportFragmentManager().beginTransaction()
-                        .replace(
-                                R.id.examsMainLayout,
-                                addExamFragment,
-                                addExamFragment.getClass().getCanonicalName())
-                        .commit();
+                NavHostFragment navHostFragment =
+                        (NavHostFragment) requireActivity().getSupportFragmentManager().findFragmentById(R.id.main_nav_host_fragment);
+                NavController navController = navHostFragment.getNavController();
+                NavDirections action = ExamsFragmentDirections.actionExamsFragmentToAddExamFragment();
+                navController.navigate(action);
             }
         });
 

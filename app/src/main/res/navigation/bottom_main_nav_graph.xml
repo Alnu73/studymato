@@ -25,6 +25,9 @@
         <action
             android:id="@+id/action_examsFragment_to_settingsFragment"
             app:destination="@id/settingsFragment" />
+        <action
+            android:id="@+id/action_examsFragment_to_addExamFragment"
+            app:destination="@id/addExamFragment" />
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
@@ -33,6 +36,15 @@
         tools:layout="@layout/fragment_settings" >
         <action
             android:id="@+id/action_settingsFragment_to_examsFragment"
+            app:destination="@id/examsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addExamFragment"
+        android:name="it.uni.sim.studymato.AddExamFragment"
+        android:label="fragment_add_exam"
+        tools:layout="@layout/fragment_add_exam" >
+        <action
+            android:id="@+id/action_addExamFragment_to_examsFragment"
             app:destination="@id/examsFragment" />
     </fragment>
 </navigation>
