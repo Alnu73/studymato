@@ -17,4 +17,5 @@
     <string name="exam_name">Exam name</string>
     <string name="number_of_credits">Number of credits</string>
     <string name="due_date">Due date</string>
+    <string name="confirm">Confirm</string>
 </resources>
