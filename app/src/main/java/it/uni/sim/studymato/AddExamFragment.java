@@ -6,6 +6,9 @@ import android.os.Bundle;
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.NavDirections;
+import androidx.navigation.fragment.NavHostFragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -92,7 +95,11 @@ public class AddExamFragment extends Fragment {
     }
 
     private void closeWindow() {
-        requireActivity().getSupportFragmentManager().popBackStack();
+        NavHostFragment navHostFragment =
+                (NavHostFragment) requireActivity().getSupportFragmentManager().findFragmentById(R.id.main_nav_host_fragment);
+        NavController navController = navHostFragment.getNavController();
+        NavDirections action = AddExamFragmentDirections.actionAddExamFragmentToExamsFragment();
+        navController.navigate(action);
         toggleBottomNavigationView();
     }
 
