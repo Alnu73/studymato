@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.NavDirections;
 import androidx.navigation.fragment.NavHostFragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -65,6 +66,10 @@ public class ExamsFragment extends Fragment {
 
         adapter = new CustomExamsAdapter(options);
         rv.setAdapter(adapter);
+
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(rv.getContext(),
+                LinearLayoutManager.VERTICAL);
+        rv.addItemDecoration(dividerItemDecoration);
 
 
         return binding.getRoot();
