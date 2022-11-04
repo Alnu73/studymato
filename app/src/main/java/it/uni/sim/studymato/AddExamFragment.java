@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.datepicker.MaterialDatePicker;
@@ -25,6 +26,10 @@ public class AddExamFragment extends Fragment {
     private final FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
     DatabaseReference ref = mDatabase.getReference();
 
+    final MaterialDatePicker<Long> datePicker = MaterialDatePicker.Builder.datePicker()
+            .setTitleText("Pick a date")
+            .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
+            .build();
 
     public AddExamFragment() {
         // Required empty public constructor
@@ -42,11 +47,6 @@ public class AddExamFragment extends Fragment {
         binding = FragmentAddExamBinding.inflate(inflater, container, false);
         toggleBottomNavigationView();
 
-        final MaterialDatePicker<Long> datePicker = MaterialDatePicker.Builder.datePicker()
-                .setTitleText("Pick a date")
-                .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
-                .build();
-
         binding.dueDateTextInputLayout.setEndIconOnClickListener(v -> {
             datePicker.show(requireActivity().getSupportFragmentManager(), "MATERIAL_DATE_PICKER");
         });
@@ -56,6 +56,9 @@ public class AddExamFragment extends Fragment {
         });
 
         binding.confirmButton.setOnClickListener(v -> {
+            if(!checkFieldsCorrect()) {
+                return;
+            }
             DatabaseReference examsRef = ref.child("exams");
             DatabaseReference ref = examsRef.push();
             ref.setValue(new Exam(binding.examNameEditText.getText().toString(),
@@ -91,6 +94,26 @@ public class AddExamFragment extends Fragment {
     private void closeWindow() {
         requireActivity().getSupportFragmentManager().popBackStack();
         toggleBottomNavigationView();
+    }
+
+    private boolean checkFieldsCorrect() {
+        if (binding.examNameEditText.getText().toString().matches("")) {
+            Toast.makeText(getContext(), "You must enter a valid exam name!", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if (binding.numberOfCreditsEditText.getText().toString().matches("")) {
+            Toast.makeText(getContext(), "You must enter a valid number of credits!", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if (binding.dueDateEditText.getText().toString().matches("")) {
+            Toast.makeText(getContext(), "You must enter a valid number of credits!", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if (datePicker.getSelection() == null || datePicker.getSelection() < System.currentTimeMillis()) {
+            Toast.makeText(getContext(), "You must enter a date in the future!", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        return true;
     }
 
     private void toggleBottomNavigationView() {
