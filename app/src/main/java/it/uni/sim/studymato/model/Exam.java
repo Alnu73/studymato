@@ -1,6 +1,5 @@
 package it.uni.sim.studymato.model;
 
-import java.util.Date;
 
 public class Exam {
 
