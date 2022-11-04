@@ -12,6 +12,7 @@ import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import it.uni.sim.studymato.model.Exam;
 
@@ -20,11 +21,15 @@ public class CustomExamsAdapter extends FirebaseRecyclerAdapter<Exam, CustomExam
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
         private final TextView examTextView;
+        private final TextView creditsTextView;
+        private final TextView dueDateTextView;
 
         public ViewHolder(View view) {
             super(view);
             // Define click listener for the ViewHolder's View
             examTextView = view.findViewById(R.id.examTextView);
+            creditsTextView = view.findViewById(R.id.creditsTextView);
+            dueDateTextView = view.findViewById(R.id.dueDateTextView);
         }
 
         public TextView getExamTextView() {
@@ -47,5 +52,8 @@ public class CustomExamsAdapter extends FirebaseRecyclerAdapter<Exam, CustomExam
     @Override
     protected void onBindViewHolder(@NonNull ViewHolder holder, int position, @NonNull Exam model) {
         holder.examTextView.setText(model.getName());
+        holder.creditsTextView.setText(String.valueOf(model.getCredits()));
+        Date date = new Date(model.getDueDate() * 1000);
+        holder.dueDateTextView.setText(String.valueOf(date).substring(0, 10));
     }
 }
