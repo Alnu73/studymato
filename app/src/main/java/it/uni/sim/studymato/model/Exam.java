@@ -8,6 +8,9 @@ public class Exam {
     private int credits;
     private Long dueDate;
 
+    public Exam() {
+    }
+
     public Exam(String name, int credits, Long dueDate) {
         this.name = name;
         this.credits = credits;

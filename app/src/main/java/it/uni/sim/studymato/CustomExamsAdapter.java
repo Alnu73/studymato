@@ -8,14 +8,14 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.firebase.ui.database.FirebaseRecyclerOptions;
+
 import java.util.ArrayList;
 
 import it.uni.sim.studymato.model.Exam;
 
-public class CustomExamsAdapter extends RecyclerView.Adapter<CustomExamsAdapter.ViewHolder> {
-
-    //TODO: Make it template?
-    private ArrayList<Exam> localDataSet;
+public class CustomExamsAdapter extends FirebaseRecyclerAdapter<Exam, CustomExamsAdapter.ViewHolder> {
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
@@ -32,8 +32,8 @@ public class CustomExamsAdapter extends RecyclerView.Adapter<CustomExamsAdapter.
         }
     }
 
-    public CustomExamsAdapter(ArrayList<Exam> dataSet) {
-        localDataSet = dataSet;
+    public CustomExamsAdapter(FirebaseRecyclerOptions<Exam> options) {
+        super(options);
     }
 
     @NonNull
@@ -41,16 +41,11 @@ public class CustomExamsAdapter extends RecyclerView.Adapter<CustomExamsAdapter.
     public CustomExamsAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.rv_row_item, parent, false);
-        return new ViewHolder(view);
+        return new CustomExamsAdapter.ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.getExamTextView().setText(localDataSet.get(position).getName());
-    }
-
-    @Override
-    public int getItemCount() {
-        return localDataSet.size();
+    protected void onBindViewHolder(@NonNull ViewHolder holder, int position, @NonNull Exam model) {
+        holder.examTextView.setText(model.getName());
     }
 }
