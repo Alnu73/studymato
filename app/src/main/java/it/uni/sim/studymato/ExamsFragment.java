@@ -61,11 +61,11 @@ public class ExamsFragment extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                NavHostFragment navHostFragment =
-                        (NavHostFragment) requireActivity().getSupportFragmentManager().findFragmentById(R.id.main_nav_host_fragment);
-                NavController navController = navHostFragment.getNavController();
-                NavDirections action = ExamsFragmentDirections.actionExamsFragmentToAddExamFragment();
-                navController.navigate(action);
+                AddExamFragment addExamFragment= new AddExamFragment();
+                requireActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.main_nav_host_fragment, addExamFragment, "findThisFragment")
+                        .addToBackStack(null)
+                        .commit();
             }
         });
 

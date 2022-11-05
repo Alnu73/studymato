@@ -95,11 +95,7 @@ public class AddExamFragment extends Fragment {
     }
 
     private void closeWindow() {
-        NavHostFragment navHostFragment =
-                (NavHostFragment) requireActivity().getSupportFragmentManager().findFragmentById(R.id.main_nav_host_fragment);
-        NavController navController = navHostFragment.getNavController();
-        NavDirections action = AddExamFragmentDirections.actionAddExamFragmentToExamsFragment();
-        navController.navigate(action);
+        requireActivity().getSupportFragmentManager().popBackStack();
         toggleBottomNavigationView();
     }
 
