@@ -53,7 +53,7 @@ public class CustomExamsAdapter extends FirebaseRecyclerAdapter<Exam, CustomExam
     protected void onBindViewHolder(@NonNull ViewHolder holder, int position, @NonNull Exam model) {
         holder.examTextView.setText(model.getName());
         holder.creditsTextView.setText(String.valueOf(model.getCredits()));
-        Date date = new Date(model.getDueDate() * 1000);
+        Date date = new Date(model.getDueDate());
         holder.dueDateTextView.setText(String.valueOf(date).substring(0, 10));
     }
 }
