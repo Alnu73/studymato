@@ -10,6 +10,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.NavDirections;
 import androidx.navigation.fragment.NavHostFragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,8 +18,12 @@ import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.datepicker.MaterialDatePicker;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import it.uni.sim.studymato.databinding.FragmentAddExamBinding;
 import it.uni.sim.studymato.model.Exam;
@@ -64,9 +69,25 @@ public class AddExamFragment extends Fragment {
             }
             DatabaseReference examsRef = ref.child("exams");
             DatabaseReference ref = examsRef.push();
-            ref.setValue(new Exam(binding.examNameEditText.getText().toString(),
-                    Integer.parseInt(binding.numberOfCreditsEditText.getText().toString()),
-                    datePicker.getSelection()));
+            Query q = examsRef.orderByChild("name").equalTo(binding.examNameEditText.getText().toString());
+            q.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if (!snapshot.exists()) {
+                        ref.setValue(new Exam(binding.examNameEditText.getText().toString(),
+                                Integer.parseInt(binding.numberOfCreditsEditText.getText().toString()),
+                                datePicker.getSelection()));
+                    }
+                    else {
+                        Log.d("db", "Data already exists! Insertion has been canceled");
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    Log.d("db", error.getMessage());
+                }
+            });
             closeWindow();
         });
 
@@ -117,6 +138,28 @@ public class AddExamFragment extends Fragment {
             return false;
         }
         return true;
+    }
+
+    private void insertData() {
+        DatabaseReference examsRef = ref.child("exams");
+        DatabaseReference ref = examsRef.push();
+        Query q = examsRef.orderByChild("name").equalTo(binding.examNameEditText.getText().toString());
+        q.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (!snapshot.exists()) {
+                    ref.setValue(new Exam(binding.examNameEditText.getText().toString(),
+                            Integer.parseInt(binding.numberOfCreditsEditText.getText().toString()),
+                            datePicker.getSelection()));
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.d("db", error.getMessage());
+            }
+        });
+
     }
 
     private void toggleBottomNavigationView() {
