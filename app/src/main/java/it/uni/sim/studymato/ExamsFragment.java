@@ -4,9 +4,6 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.NavController;
-import androidx.navigation.NavDirections;
-import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -58,15 +55,12 @@ public class ExamsFragment extends Fragment {
         FloatingActionButton fab = binding.fab;
         DatabaseReference examsRef = ref.child("exams");
 
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                AddExamFragment addExamFragment= new AddExamFragment();
-                requireActivity().getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.main_nav_host_fragment, addExamFragment, "findThisFragment")
-                        .addToBackStack(null)
-                        .commit();
-            }
+        fab.setOnClickListener(view -> {
+            AddExamFragment addExamFragment= new AddExamFragment();
+            requireActivity().getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.main_nav_host_fragment, addExamFragment, "findThisFragment")
+                    .addToBackStack(null)
+                    .commit();
         });
 
         rv.setLayoutManager(new LinearLayoutManager(getContext()));

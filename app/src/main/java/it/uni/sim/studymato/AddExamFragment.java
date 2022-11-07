@@ -6,9 +6,6 @@ import android.os.Bundle;
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.NavController;
-import androidx.navigation.NavDirections;
-import androidx.navigation.fragment.NavHostFragment;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -25,6 +22,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.Objects;
 
 import it.uni.sim.studymato.databinding.FragmentAddExamBinding;
 import it.uni.sim.studymato.model.Exam;
@@ -50,20 +49,16 @@ public class AddExamFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         binding = FragmentAddExamBinding.inflate(inflater, container, false);
 
         toggleBottomNavigationView();
 
-        binding.dueDateTextInputLayout.setEndIconOnClickListener(v -> {
-            datePicker.show(requireActivity().getSupportFragmentManager(), "MATERIAL_DATE_PICKER");
-        });
+        binding.dueDateTextInputLayout.setEndIconOnClickListener(v -> datePicker.show(requireActivity().getSupportFragmentManager(), "MATERIAL_DATE_PICKER"));
 
-        datePicker.addOnPositiveButtonClickListener(v -> {
-            binding.dueDateEditText.setText(datePicker.getHeaderText());
-        });
+        datePicker.addOnPositiveButtonClickListener(v -> binding.dueDateEditText.setText(datePicker.getHeaderText()));
 
         binding.confirmButton.setOnClickListener(v -> {
             if(!checkFieldsCorrect()) {
@@ -105,16 +100,16 @@ public class AddExamFragment extends Fragment {
     }
 
     private boolean checkFieldsCorrect() {
-        if (binding.examNameEditText.getText().toString().matches("")) {
+        if (Objects.requireNonNull(binding.examNameEditText.getText()).toString().matches("")) {
             Toast.makeText(getContext(), "You must enter a valid exam name!", Toast.LENGTH_SHORT).show();
             return false;
         }
-        if (binding.numberOfCreditsEditText.getText().toString().matches("")) {
+        if (Objects.requireNonNull(binding.numberOfCreditsEditText.getText()).toString().matches("")) {
             Toast.makeText(getContext(), "You must enter a valid number of credits!", Toast.LENGTH_SHORT).show();
             return false;
         }
-        if (binding.dueDateEditText.getText().toString().matches("")) {
-            Toast.makeText(getContext(), "You must enter a valid number of credits!", Toast.LENGTH_SHORT).show();
+        if (Objects.requireNonNull(binding.dueDateEditText.getText()).toString().matches("")) {
+            Toast.makeText(getContext(), "You must enter a valid due date!", Toast.LENGTH_SHORT).show();
             return false;
         }
         if (datePicker.getSelection() == null || datePicker.getSelection() < System.currentTimeMillis()) {
