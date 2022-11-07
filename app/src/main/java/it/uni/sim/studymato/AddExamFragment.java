@@ -55,9 +55,6 @@ public class AddExamFragment extends Fragment {
         // Inflate the layout for this fragment
         binding = FragmentAddExamBinding.inflate(inflater, container, false);
 
-        EditText examNameEditText = binding.examNameEditText;
-        EditText numberOfCreditsEditText = binding.numberOfCreditsEditText;
-
         toggleBottomNavigationView();
 
         binding.dueDateTextInputLayout.setEndIconOnClickListener(v -> {
@@ -72,27 +69,9 @@ public class AddExamFragment extends Fragment {
             if(!checkFieldsCorrect()) {
                 return;
             }
-            DatabaseReference examsRef = ref.child("exams");
-            DatabaseReference ref = examsRef.push();
-            Query q = examsRef.orderByChild("name").equalTo(examNameEditText.getText().toString());
-            q.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    if (!snapshot.exists()) {
-                        ref.setValue(new Exam(examNameEditText.getText().toString(),
-                                Integer.parseInt(numberOfCreditsEditText.getText().toString()),
-                                datePicker.getSelection()));
-                    }
-                    else {
-                        Log.d("db", "Data already exists! Insertion has been canceled");
-                    }
-                }
 
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-                    Log.d("db", error.getMessage());
-                }
-            });
+            insertDataFromFields();
+
             closeWindow();
         });
 
@@ -145,6 +124,32 @@ public class AddExamFragment extends Fragment {
         return true;
     }
 
+    private void insertDataFromFields() {
+        EditText examNameEditText = binding.examNameEditText;
+        EditText numberOfCreditsEditText = binding.numberOfCreditsEditText;
+
+        DatabaseReference examsRef = ref.child("exams");
+        DatabaseReference ref = examsRef.push();
+        Query q = examsRef.orderByChild("name").equalTo(examNameEditText.getText().toString());
+        q.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (!snapshot.exists()) {
+                    ref.setValue(new Exam(examNameEditText.getText().toString(),
+                            Integer.parseInt(numberOfCreditsEditText.getText().toString()),
+                            datePicker.getSelection()));
+                }
+                else {
+                    Log.d("db", "Data already exists! Insertion has been canceled");
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.d("db", error.getMessage());
+            }
+        });
+    }
 
     private void toggleBottomNavigationView() {
         BottomNavigationView bottomNavigationView = requireActivity().findViewById(R.id.bottomNavigationView);
