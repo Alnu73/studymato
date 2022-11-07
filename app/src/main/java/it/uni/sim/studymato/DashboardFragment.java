@@ -59,11 +59,11 @@ public class DashboardFragment extends Fragment {
                     if (exam != null) {
                         Long diff = exam.getDueDate() - System.currentTimeMillis();
                         Long daysDiff = TimeUnit.MILLISECONDS.toDays(diff);
-                        binding.nextExamTextView.append(daysDiff + " days " + "(" + exam.getName() + ")");
+                        binding.nextDeadlineTextView.append(exam.getName() + " in " + daysDiff + " days");
                     }
                 }
                 else {
-                    binding.nextExamTextView.setText("No exams soon");
+                    binding.nextDeadlineTextView.setText("None");
                 }
             }
 
