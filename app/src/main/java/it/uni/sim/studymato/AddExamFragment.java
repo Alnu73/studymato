@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -53,6 +54,10 @@ public class AddExamFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         binding = FragmentAddExamBinding.inflate(inflater, container, false);
+
+        EditText examNameEditText = binding.examNameEditText;
+        EditText numberOfCreditsEditText = binding.numberOfCreditsEditText;
+
         toggleBottomNavigationView();
 
         binding.dueDateTextInputLayout.setEndIconOnClickListener(v -> {
@@ -69,13 +74,13 @@ public class AddExamFragment extends Fragment {
             }
             DatabaseReference examsRef = ref.child("exams");
             DatabaseReference ref = examsRef.push();
-            Query q = examsRef.orderByChild("name").equalTo(binding.examNameEditText.getText().toString());
+            Query q = examsRef.orderByChild("name").equalTo(examNameEditText.getText().toString());
             q.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     if (!snapshot.exists()) {
-                        ref.setValue(new Exam(binding.examNameEditText.getText().toString(),
-                                Integer.parseInt(binding.numberOfCreditsEditText.getText().toString()),
+                        ref.setValue(new Exam(examNameEditText.getText().toString(),
+                                Integer.parseInt(numberOfCreditsEditText.getText().toString()),
                                 datePicker.getSelection()));
                     }
                     else {
@@ -140,27 +145,6 @@ public class AddExamFragment extends Fragment {
         return true;
     }
 
-    private void insertData() {
-        DatabaseReference examsRef = ref.child("exams");
-        DatabaseReference ref = examsRef.push();
-        Query q = examsRef.orderByChild("name").equalTo(binding.examNameEditText.getText().toString());
-        q.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (!snapshot.exists()) {
-                    ref.setValue(new Exam(binding.examNameEditText.getText().toString(),
-                            Integer.parseInt(binding.numberOfCreditsEditText.getText().toString()),
-                            datePicker.getSelection()));
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Log.d("db", error.getMessage());
-            }
-        });
-
-    }
 
     private void toggleBottomNavigationView() {
         BottomNavigationView bottomNavigationView = requireActivity().findViewById(R.id.bottomNavigationView);
