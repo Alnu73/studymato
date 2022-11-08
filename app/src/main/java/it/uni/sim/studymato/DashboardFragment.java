@@ -72,6 +72,15 @@ public class DashboardFragment extends Fragment {
 
             }
         });
+
+        binding.studyButton.setOnClickListener(v -> {
+            StudySessionFragment studySessionFragment = new StudySessionFragment();
+            requireActivity().getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.main_nav_host_fragment, studySessionFragment, "studySessionFragment")
+                    .addToBackStack(null)
+                    .commit();
+        });
+
         return binding.getRoot();
     }
 
