@@ -13,9 +13,13 @@ import android.os.CountDownTimer;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 
 import it.uni.sim.studymato.databinding.FragmentStudySessionBinding;
 import it.uni.sim.studymato.model.StudySession;
@@ -62,6 +66,7 @@ public class StudySessionFragment extends Fragment {
         binding.endSessionButton.setOnClickListener(v -> {
             //Dialog
             studyTimer.cancel();
+            showEndDialog();
         });
 
         return binding.getRoot();
@@ -120,7 +125,24 @@ public class StudySessionFragment extends Fragment {
         }
     }
 
-
+    private void showEndDialog() {
+        final Spinner spinner = new Spinner(getContext());
+        ArrayList<String> spinnerArray = new ArrayList<String>();
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, spinnerArray);
+        spinner.setAdapter(adapter);
+        AlertDialog dialog = new AlertDialog.Builder(getContext())
+                .setMessage("What exam you studied for?")
+                .setView(spinner)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        //Salva
+                        closeWindow();
+                    }
+                })
+                .create();
+        dialog.show();
+    }
 
     private void closeWindow() {
         requireActivity().getSupportFragmentManager().popBackStack();
