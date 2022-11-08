@@ -1,5 +1,7 @@
 package it.uni.sim.studymato;
 
+import static java.lang.Math.abs;
+
 import android.app.AlertDialog;
 import android.content.Context;
 import android.os.Bundle;
@@ -15,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.database.DataSnapshot;
@@ -38,6 +41,7 @@ public class StudySessionFragment extends Fragment {
     private CountDownTimer studyTimer;
     private long studyInterval;
     private long breakInterval;
+    private long timeElapsed;
     private StudyIntervals currentInterval;
     private int numberOfStudyIntervals = 0;
     private enum StudyIntervals {
@@ -59,7 +63,7 @@ public class StudySessionFragment extends Fragment {
         binding = FragmentStudySessionBinding.inflate(inflater, container, false);
         // Inflate the layout for this fragment
         toggleBottomNavigationView();
-        studyInterval = 5000;   //from settings
+        studyInterval = 10000;   //from settings
         breakInterval = 5000;
         currentInterval = StudyIntervals.STUDY;
         binding.breakAndResumeButton.setEnabled(false);
@@ -106,6 +110,9 @@ public class StudySessionFragment extends Fragment {
             @Override
             public void onTick(long l) {
                 binding.timerTextView.setText("Time elapsed: " + l / 1000);
+                if (currentInterval == StudyIntervals.STUDY) {
+                    timeElapsed = abs(studyInterval - l);
+                }
             }
 
             @Override
@@ -148,6 +155,9 @@ public class StudySessionFragment extends Fragment {
     }
 
     private void showEndDialog() {
+        final long duration = numberOfStudyIntervals != 0 ? numberOfStudyIntervals*studyInterval : timeElapsed;
+        System.out.println(duration);
+
         final Spinner spinner = new Spinner(getContext());
         ArrayList<Exam> spinnerArray = new ArrayList<Exam>();
         DatabaseReference examsRef = ref.child("exams");
@@ -159,7 +169,6 @@ public class StudySessionFragment extends Fragment {
                     Exam exam = ds.getValue(Exam.class);
                     if (exam != null) {
                         spinnerArray.add(exam);
-                        System.out.println("uno" + spinnerArray);
                         ArrayAdapter<Exam> adapter = new ArrayAdapter<Exam>(getContext(), android.R.layout.simple_spinner_item, spinnerArray);
                         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         spinner.setAdapter(adapter);
@@ -176,9 +185,14 @@ public class StudySessionFragment extends Fragment {
                 .setMessage("What exam have you studied for?")
                 .setView(spinner)
                 .setPositiveButton("OK", (dialogInterface, i) -> {
-                    Exam selectedExam = (Exam) spinner.getSelectedItem();
-                    StudySession studySession = new StudySession(selectedExam, System.currentTimeMillis(), numberOfStudyIntervals*studyInterval);
-                    saveSession(studySession);
+                    if (duration != 0) {
+                        Exam selectedExam = (Exam) spinner.getSelectedItem();
+                        StudySession studySession = new StudySession(selectedExam, System.currentTimeMillis(), duration);
+                        saveSession(studySession);
+                    }
+                    else {
+                        Toast.makeText(getContext(), "Duration is zero. Session won't be saved.", Toast.LENGTH_SHORT).show();
+                    }
                     closeWindow();
                 })
                 .create();
