@@ -2,7 +2,6 @@ package it.uni.sim.studymato;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.activity.OnBackPressedCallback;
@@ -10,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.os.CountDownTimer;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,16 +17,24 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-
 import it.uni.sim.studymato.databinding.FragmentStudySessionBinding;
+import it.uni.sim.studymato.model.Exam;
 import it.uni.sim.studymato.model.StudySession;
 
 public class StudySessionFragment extends Fragment {
 
     FragmentStudySessionBinding binding = null;
+    private final FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
+    private final DatabaseReference ref = mDatabase.getReference();
+
     private CountDownTimer studyTimer;
     private long studyInterval;
     private long breakInterval;
@@ -51,7 +59,7 @@ public class StudySessionFragment extends Fragment {
         binding = FragmentStudySessionBinding.inflate(inflater, container, false);
         // Inflate the layout for this fragment
         toggleBottomNavigationView();
-        studyInterval = 5000;
+        studyInterval = 5000;   //from settings
         breakInterval = 5000;
         currentInterval = StudyIntervals.STUDY;
         binding.breakAndResumeButton.setEnabled(false);
@@ -103,6 +111,10 @@ public class StudySessionFragment extends Fragment {
             @Override
             public void onFinish() {
                 binding.timerTextView.setText("Done");
+                if (currentInterval == StudyIntervals.STUDY) {
+                    numberOfStudyIntervals += 1;
+                    binding.progressTextView.setText(numberOfStudyIntervals*(studyInterval / 1000) + " minutes");
+                }
                 binding.breakAndResumeButton.setEnabled(true);
             }
         };
@@ -113,10 +125,8 @@ public class StudySessionFragment extends Fragment {
         //TODO: Send notification
         if (currentInterval == StudyIntervals.STUDY) {
             currentInterval = StudyIntervals.BREAK;
-            numberOfStudyIntervals += 1;
             setupTimer(breakInterval);
             binding.breakAndResumeButton.setText("Resume");
-            binding.progressTextView.setText(numberOfStudyIntervals*(studyInterval / 1000) + " minutes");
         }
         else {
             currentInterval = StudyIntervals.STUDY;
@@ -127,21 +137,61 @@ public class StudySessionFragment extends Fragment {
 
     private void showEndDialog() {
         final Spinner spinner = new Spinner(getContext());
-        ArrayList<String> spinnerArray = new ArrayList<String>();
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, spinnerArray);
-        spinner.setAdapter(adapter);
-        AlertDialog dialog = new AlertDialog.Builder(getContext())
-                .setMessage("What exam you studied for?")
-                .setView(spinner)
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        //Salva
-                        closeWindow();
+        ArrayList<Exam> spinnerArray = new ArrayList<Exam>();
+        DatabaseReference examsRef = ref.child("exams");
+        Query q = examsRef.orderByChild("name");
+        q.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot ds : snapshot.getChildren()) {
+                    Exam exam = ds.getValue(Exam.class);
+                    if (exam != null) {
+                        spinnerArray.add(exam);
+                        System.out.println("uno" + spinnerArray);
+                        ArrayAdapter<Exam> adapter = new ArrayAdapter<Exam>(getContext(), android.R.layout.simple_spinner_item, spinnerArray);
+                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        spinner.setAdapter(adapter);
                     }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+        AlertDialog dialog = new AlertDialog.Builder(getContext())
+                .setMessage("What exam have you studied for?")
+                .setView(spinner)
+                .setPositiveButton("OK", (dialogInterface, i) -> {
+                    Exam selectedExam = (Exam) spinner.getSelectedItem();
+                    StudySession studySession = new StudySession(selectedExam, System.currentTimeMillis(), numberOfStudyIntervals*studyInterval);
+                    saveSession(studySession);
+                    closeWindow();
                 })
                 .create();
         dialog.show();
+    }
+
+    private void saveSession(StudySession session) {
+        DatabaseReference sessionsRef = ref.child("sessions");
+        DatabaseReference saveRef = sessionsRef.push();
+        saveRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(!snapshot.exists()) {
+                    saveRef.setValue(session);
+                }
+                else {
+                    Log.d("db", "Data already exists! Insertion has been canceled");
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     private void closeWindow() {
