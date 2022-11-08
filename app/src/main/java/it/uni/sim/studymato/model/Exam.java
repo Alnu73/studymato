@@ -5,7 +5,7 @@ public class Exam {
 
     private String name;
     private int credits;
-    private Long dueDate;
+    private long dueDate;
 
     public Exam() {
     }

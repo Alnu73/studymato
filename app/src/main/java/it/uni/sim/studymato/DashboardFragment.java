@@ -57,8 +57,8 @@ public class DashboardFragment extends Fragment {
                     DataSnapshot ds = snapshot.getChildren().iterator().next();
                     Exam exam = ds.getValue(Exam.class);
                     if (exam != null) {
-                        Long diff = exam.getDueDate() - System.currentTimeMillis();
-                        Long daysDiff = TimeUnit.MILLISECONDS.toDays(diff);
+                        long diff = exam.getDueDate() - System.currentTimeMillis();
+                        long daysDiff = TimeUnit.MILLISECONDS.toDays(diff);
                         binding.nextDeadlineTextView.append(exam.getName() + " in " + daysDiff + " days");
                     }
                 }
