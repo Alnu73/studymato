@@ -94,7 +94,7 @@ public class StudySessionFragment extends Fragment {
         ) {
             @Override
             public void handleOnBackPressed() {
-                closeWindow();
+                showCancelDialog();
             }
         };
         requireActivity().getOnBackPressedDispatcher().addCallback(
@@ -133,6 +133,18 @@ public class StudySessionFragment extends Fragment {
             setupTimer(studyInterval);
             binding.breakAndResumeButton.setText("Take a break");
         }
+    }
+
+    private void showCancelDialog() {
+        AlertDialog dialog = new AlertDialog.Builder(getContext())
+                .setMessage("Your progress will be lost! Are you sure you want to exit?")
+                .setPositiveButton("Yes", (dialogInterface, i) -> {
+                    studyTimer.cancel();
+                    closeWindow();
+                })
+                .setNegativeButton("No", ((dialogInterface, i) -> dialogInterface.cancel()))
+                .create();
+        dialog.show();
     }
 
     private void showEndDialog() {
