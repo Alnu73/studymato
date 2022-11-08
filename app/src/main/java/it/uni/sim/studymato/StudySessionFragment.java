@@ -28,6 +28,8 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Locale;
+
 import it.uni.sim.studymato.databinding.FragmentStudySessionBinding;
 import it.uni.sim.studymato.model.Exam;
 import it.uni.sim.studymato.model.StudySession;
@@ -38,7 +40,7 @@ public class StudySessionFragment extends Fragment {
     private final FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
     private final DatabaseReference ref = mDatabase.getReference();
 
-    private CountDownTimer studyTimer;
+    private CountDownTimer tomatoTimer;
     private long studyInterval;
     private long breakInterval;
     private long timeElapsed;
@@ -68,16 +70,16 @@ public class StudySessionFragment extends Fragment {
         currentInterval = StudyIntervals.STUDY;
         binding.breakAndResumeButton.setEnabled(false);
         setupTimer(studyInterval);
-        studyTimer.start();
+        tomatoTimer.start();
 
         binding.breakAndResumeButton.setOnClickListener(v -> {
             goToNextInterval();
-            studyTimer.start();
+            tomatoTimer.start();
         });
 
         binding.endSessionButton.setOnClickListener(v -> {
             //Dialog
-            studyTimer.cancel();
+            tomatoTimer.cancel();
             showEndDialog();
         });
 
@@ -106,10 +108,13 @@ public class StudySessionFragment extends Fragment {
     }
 
     private void setupTimer(long interval) {
-        studyTimer = new CountDownTimer(interval, 1000) {
+        tomatoTimer = new CountDownTimer(interval, 1000) {
             @Override
             public void onTick(long l) {
-                binding.timerTextView.setText("Time elapsed: " + l / 1000);
+                long seconds = l/1000;
+                String formattedTime = String.format(Locale.getDefault(), "%02d:%02d:%02d", seconds / 3600,
+                        (seconds % 3600) / 60, (seconds % 60));
+                binding.timerTextView.setText(formattedTime);
                 if (currentInterval == StudyIntervals.STUDY) {
                     timeElapsed = abs(studyInterval - l);
                 }
@@ -117,10 +122,14 @@ public class StudySessionFragment extends Fragment {
 
             @Override
             public void onFinish() {
-                binding.timerTextView.setText("Done");
                 if (currentInterval == StudyIntervals.STUDY) {
                     numberOfStudyIntervals += 1;
-                    binding.progressTextView.setText(numberOfStudyIntervals*(studyInterval / 1000) + " minutes");
+                    long mins = numberOfStudyIntervals*(studyInterval / 1000);
+                    binding.progressTextView.setText(String.format("You studied %d minutes", mins));
+                    binding.statusTextView.setText("Your timer has ended! You may take a break.");
+                }
+                else {
+                    binding.statusTextView.setText("Time to resume!");
                 }
                 binding.breakAndResumeButton.setEnabled(true);
             }
@@ -146,7 +155,7 @@ public class StudySessionFragment extends Fragment {
         AlertDialog dialog = new AlertDialog.Builder(getContext())
                 .setMessage("Your progress will be lost! Are you sure you want to exit?")
                 .setPositiveButton("Yes", (dialogInterface, i) -> {
-                    studyTimer.cancel();
+                    tomatoTimer.cancel();
                     closeWindow();
                 })
                 .setNegativeButton("No", ((dialogInterface, i) -> dialogInterface.cancel()))
