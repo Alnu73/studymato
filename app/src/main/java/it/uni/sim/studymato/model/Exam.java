@@ -39,4 +39,9 @@ public class Exam {
     public void setDueDate(Long dueDate) {
         this.dueDate = dueDate;
     }
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }
