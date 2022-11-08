@@ -6,8 +6,32 @@
     tools:context=".StudySessionFragment">
 
     <TextView
+        android:id="@+id/timerTextView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:text="-" />
+
+    <TextView
+        android:id="@+id/progressTextView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="50dp"
+        android:text="You studied " />
+
+    <Button
+        android:id="@+id/breakAndResumeButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:padding="15dp"
+        android:text="Take a break" />
+
+    <Button
+        android:id="@+id/endSessionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:padding="15dp"
+        android:text="End study session" />
 
 </FrameLayout>
