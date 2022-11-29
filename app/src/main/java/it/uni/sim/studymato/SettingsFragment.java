@@ -2,8 +2,11 @@ package it.uni.sim.studymato;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
-import it.uni.sim.studymato.databinding.FragmentSettingsBinding;
+import androidx.preference.SwitchPreference;
+import androidx.preference.SwitchPreferenceCompat;
 
 /*
 -durata pomodoro
@@ -19,6 +22,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
 
     }
 

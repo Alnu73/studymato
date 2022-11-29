@@ -1,24 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <SwitchPreferenceCompat
-        android:key="notifications"
-        android:title="Enable notifications"/>
+    <PreferenceCategory
+        android:key="notifications_category"
+        android:title="Notifications">
 
-    <SwitchPreferenceCompat
-        android:key="onboarding"
-        android:title="Enable onboarding"/>
+        <SwitchPreferenceCompat
+            android:key="notifications"
+            android:title="Disable notifications"/>
 
-    <Preference
-        android:key="logout"
-        android:title="Logout"/>
+    </PreferenceCategory>
 
-    <EditTextPreference
-        android:key="studytomato"
-        android:inputType="numberPassword"
-        android:title="Study tomato duration"/>
+    <PreferenceCategory
+        android:key="onboarding_category"
+        android:title="Onboarding">
 
-    <EditTextPreference
-        android:key="breaktomato"
-        android:inputType="number"
-        android:title="Break tomato duration"/>
+        <SwitchPreferenceCompat
+            android:key="onboarding"
+            android:title="Restart onboarding"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:key="study_category"
+        android:title="Study">
+
+        <EditTextPreference
+            android:key="studytomato"
+            android:inputType="numberPassword"
+            android:defaultValue="30"
+            android:title="Study tomato duration"/>
+
+        <EditTextPreference
+            android:key="breaktomato"
+            android:inputType="number"
+            android:defaultValue="10"
+            android:title="Break tomato duration"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:key="account_category"
+        android:title="Account">
+
+        <Preference
+            android:key="delete_account"
+            android:title="Delete account"/>
+        <Preference
+            android:key="logout"
+            android:title="Logout"/>
+
+    </PreferenceCategory>
 </PreferenceScreen>
