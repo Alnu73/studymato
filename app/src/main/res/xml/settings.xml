@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <SwitchPreferenceCompat
+        android:key="notifications"
+        android:title="Enable notifications"/>
+
+    <SwitchPreferenceCompat
+        android:key="onboarding"
+        android:title="Enable onboarding"/>
+
+    <Preference
+        android:key="logout"
+        android:title="Logout"/>
+
+    <EditTextPreference
+        android:key="studytomato"
+        android:inputType="numberPassword"
+        android:title="Study tomato duration"/>
+
+    <EditTextPreference
+        android:key="breaktomato"
+        android:inputType="number"
+        android:title="Break tomato duration"/>
+</PreferenceScreen>
