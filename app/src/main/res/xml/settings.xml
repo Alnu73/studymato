@@ -28,13 +28,15 @@
             android:key="studytomato"
             android:inputType="numberPassword"
             android:defaultValue="30"
-            android:title="Study tomato duration"/>
+            android:title="Study tomato duration"
+            android:summary="Default is 30 minutes"/>
 
         <EditTextPreference
             android:key="breaktomato"
             android:inputType="number"
-            android:defaultValue="10"
-            android:title="Break tomato duration"/>
+            android:defaultValue="5"
+            android:title="Break tomato duration"
+            android:summary="Default is 5 minutes"/>
 
     </PreferenceCategory>
 
