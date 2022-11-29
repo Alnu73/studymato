@@ -71,6 +71,7 @@ public class ExamsFragment extends Fragment {
         adapter = new CustomExamsAdapter(options);
         rv.setAdapter(adapter);
 
+        checkExamExpiration();
         customizeRecyclerView();
 
         return binding.getRoot();
@@ -137,5 +138,32 @@ public class ExamsFragment extends Fragment {
             }
         }).attachToRecyclerView(rv);
 
+    }
+
+    private void checkExamExpiration() {
+        DatabaseReference examsRef = ref.child("exams");
+        Query q = examsRef.orderByChild("dueDate");
+        q.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    for (DataSnapshot ds : snapshot.getChildren()) {
+                        Exam exam = ds.getValue(Exam.class);
+                        if (exam != null &&  exam.getDueDate() < System.currentTimeMillis()) {
+                            examsRef.child(Objects.requireNonNull(ds.getKey())).removeValue().addOnCompleteListener(task -> {
+                                if(!task.isSuccessful()) {
+                                    Log.e("firebase", "Error deleting data", task.getException());
+                                }
+                            });
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 }
