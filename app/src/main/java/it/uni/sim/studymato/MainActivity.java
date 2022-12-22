@@ -63,9 +63,7 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences =
                 PreferenceManager.getDefaultSharedPreferences(this);
         // Check if we need to display our OnboardingSupportFragment
-        if (!sharedPreferences.getBoolean(
-                OnboardingPageFragment.COMPLETED_ONBOARDING
-                , false)) {
+        if (!sharedPreferences.getBoolean(getString(R.string.onboarding_completed), false)) {
             // The user hasn't seen the OnboardingSupportFragment yet, so show it
             startActivity(new Intent(this, OnboardingActivity.class));
         }

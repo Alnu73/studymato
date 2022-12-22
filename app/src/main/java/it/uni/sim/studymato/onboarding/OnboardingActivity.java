@@ -60,9 +60,7 @@ public class OnboardingActivity extends AppCompatActivity {
     private void setOnboardingCompleted() {
         SharedPreferences.Editor sharedPreferencesEditor =
                 PreferenceManager.getDefaultSharedPreferences(this).edit();
-        sharedPreferencesEditor.putBoolean(
-                OnboardingPageFragment.COMPLETED_ONBOARDING
-                , true);
+        sharedPreferencesEditor.putBoolean(getString(R.string.onboarding_completed), true);
         sharedPreferencesEditor.apply();
     }
 }

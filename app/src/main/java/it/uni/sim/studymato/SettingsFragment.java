@@ -16,8 +16,6 @@ import it.uni.sim.studymato.onboarding.OnboardingPageFragment;
 
 public class SettingsFragment extends PreferenceFragmentCompat {
     //TODO: put preferences in strings.xml
-    public static final String STUDY_DURATION = "study_duration";
-    public static final String BREAK_DURATION = "break_duration";
 
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -38,9 +36,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         Preference breakDurationPref = findPreference("breaktomato");
 
         Objects.requireNonNull(switchPref).setOnPreferenceChangeListener((preference, newValue) -> {
-            sharedPreferencesEditor.putBoolean(
-                    OnboardingPageFragment.COMPLETED_ONBOARDING
-                    , switchPref.isChecked());
+            sharedPreferencesEditor.putBoolean(getString(R.string.onboarding_completed), switchPref.isChecked());
             sharedPreferencesEditor.apply();
             return true;
         });
@@ -62,13 +58,13 @@ public class SettingsFragment extends PreferenceFragmentCompat {
 
         Objects.requireNonNull(tomatoDurationPref).setOnPreferenceChangeListener((preference, newValue) -> {
             String newValueStr = String.valueOf(newValue);
-            sharedPreferencesEditor.putLong(STUDY_DURATION, Long.parseLong(newValueStr)).apply();
+            sharedPreferencesEditor.putLong(getString(R.string.study_duration), Long.parseLong(newValueStr)).apply();
             return true;
         });
 
         Objects.requireNonNull(breakDurationPref).setOnPreferenceChangeListener((preference, newValue) -> {
             String newValueStr = String.valueOf(newValue);
-            sharedPreferencesEditor.putLong(BREAK_DURATION, Long.parseLong(newValueStr)).apply();
+            sharedPreferencesEditor.putLong(getString(R.string.break_duration), Long.parseLong(newValueStr)).apply();
             return true;
         });
 
@@ -79,7 +75,8 @@ public class SettingsFragment extends PreferenceFragmentCompat {
 
     private void toggleOnboardingSetting(SwitchPreferenceCompat pref) {
         SharedPreferences onbPref = PreferenceManager.getDefaultSharedPreferences(requireContext());
-        if (onbPref.getBoolean(OnboardingPageFragment.COMPLETED_ONBOARDING, true)) {
+        System.out.println(onbPref.getLong(getString(R.string.study_duration), 0));
+        if (onbPref.getBoolean(getString(R.string.onboarding_completed), true)) {
             pref.setChecked(false);
         }
 
