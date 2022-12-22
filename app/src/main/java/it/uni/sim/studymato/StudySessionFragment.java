@@ -73,7 +73,7 @@ public class StudySessionFragment extends Fragment {
         binding = FragmentStudySessionBinding.inflate(inflater, container, false);
         // Inflate the layout for this fragment
         toggleBottomNavigationView();
-        studyInterval = TimeUnit.MINUTES.toMillis(spref.getLong(getString(R.string.study_duration), 10000));
+        studyInterval = 5000; //TimeUnit.MINUTES.toMillis(spref.getLong(getString(R.string.study_duration), 10000));
         breakInterval = TimeUnit.MINUTES.toMillis(spref.getLong(getString(R.string.break_duration), 5000));
         currentInterval = StudyIntervals.STUDY;
         binding.breakAndResumeButton.setEnabled(false);
@@ -245,7 +245,8 @@ public class StudySessionFragment extends Fragment {
                 .setSmallIcon(R.drawable.ic_notification_icon_foreground)
                 .setContentTitle(textTitle)
                 .setContentText(textContent)
-                .setPriority(NotificationCompat.PRIORITY_HIGH);
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setChannelId(getString(R.string.channel_id));
         notificationManager.notify(incrId.incrementAndGet(), builder.build());
     }
 

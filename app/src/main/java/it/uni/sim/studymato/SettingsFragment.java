@@ -34,13 +34,13 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         Preference breakDurationPref = findPreference("breaktomato");
 
         Objects.requireNonNull(switchOnboardingPref).setOnPreferenceChangeListener((preference, newValue) -> {
-            sharedPreferencesEditor.putBoolean(getString(R.string.onboarding_completed), switchOnboardingPref.isChecked());
+            sharedPreferencesEditor.putBoolean(getString(R.string.onboarding_completed), (Boolean) newValue);
             sharedPreferencesEditor.apply();
             return true;
         });
 
         Objects.requireNonNull(switchNotificationPref).setOnPreferenceChangeListener((preference, newValue) -> {
-            sharedPreferencesEditor.putBoolean(getString(R.string.disable_notifications), switchNotificationPref.isChecked());
+            sharedPreferencesEditor.putBoolean(getString(R.string.disable_notifications), (Boolean) newValue);
             sharedPreferencesEditor.apply();
             return true;
         });
