@@ -61,15 +61,16 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         });
 
         Objects.requireNonNull(tomatoDurationPref).setOnPreferenceChangeListener((preference, newValue) -> {
-            sharedPreferencesEditor.putLong(STUDY_DURATION, (Long) newValue);
+            String newValueStr = String.valueOf(newValue);
+            sharedPreferencesEditor.putLong(STUDY_DURATION, Long.parseLong(newValueStr)).apply();
             return true;
         });
 
         Objects.requireNonNull(breakDurationPref).setOnPreferenceChangeListener((preference, newValue) -> {
-            sharedPreferencesEditor.putLong(BREAK_DURATION, (Long) newValue);
+            String newValueStr = String.valueOf(newValue);
+            sharedPreferencesEditor.putLong(BREAK_DURATION, Long.parseLong(newValueStr)).apply();
             return true;
         });
-
 
         //TODO: Disable notifications
         toggleOnboardingSetting(switchPref);
