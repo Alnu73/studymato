@@ -1,11 +1,13 @@
 package it.uni.sim.studymato;
 
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -40,6 +42,10 @@ public class CustomExamsAdapter extends FirebaseRecyclerAdapter<Exam, CustomExam
 
         private ViewHolder.ClickListener mClickListener;
 
+        public ClickListener getmClickListener() {
+            return mClickListener;
+        }
+
         public interface ClickListener {
             void onItemClick(View view, int position);
         }
@@ -70,6 +76,18 @@ public class CustomExamsAdapter extends FirebaseRecyclerAdapter<Exam, CustomExam
 
         holder.setOnClickListener((view, pos) -> {
             //Open new fragment
+            //TODO: Da rivedere!
+            ExamStatsFragment examStatsFragment = new ExamStatsFragment();
+            Bundle args = new Bundle();
+            args.putString("examName",model.getName());
+            args.putInt("examCredits", model.getCredits());
+            args.putLong("examCredits", model.getDueDate());
+            examStatsFragment.setArguments(args);
+            AppCompatActivity activity = (AppCompatActivity) view.getContext();
+            activity.getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.main_nav_host_fragment, examStatsFragment, "studySessionFragment")
+                    .addToBackStack(null)
+                    .commit();
         });
     }
 }
