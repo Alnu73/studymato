@@ -12,8 +12,6 @@ import com.google.firebase.auth.FirebaseUser;
 
 import java.util.Objects;
 
-import it.uni.sim.studymato.onboarding.OnboardingPageFragment;
-
 public class SettingsFragment extends PreferenceFragmentCompat {
     //TODO: put preferences in strings.xml
 
@@ -75,7 +73,6 @@ public class SettingsFragment extends PreferenceFragmentCompat {
 
     private void toggleOnboardingSetting(SwitchPreferenceCompat pref) {
         SharedPreferences onbPref = PreferenceManager.getDefaultSharedPreferences(requireContext());
-        System.out.println(onbPref.getLong(getString(R.string.study_duration), 0));
         if (onbPref.getBoolean(getString(R.string.onboarding_completed), true)) {
             pref.setChecked(false);
         }
