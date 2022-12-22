@@ -30,10 +30,22 @@ public class CustomExamsAdapter extends FirebaseRecyclerAdapter<Exam, CustomExam
             examTextView = view.findViewById(R.id.examTextView);
             creditsTextView = view.findViewById(R.id.creditsTextView);
             dueDateTextView = view.findViewById(R.id.dueDateTextView);
+
+            view.setOnClickListener(v -> mClickListener.onItemClick(v, getAbsoluteAdapterPosition()));
         }
 
         public TextView getExamTextView() {
             return examTextView;
+        }
+
+        private ViewHolder.ClickListener mClickListener;
+
+        public interface ClickListener {
+            void onItemClick(View view, int position);
+        }
+
+        public void setOnClickListener(ViewHolder.ClickListener clickListener){
+            mClickListener = clickListener;
         }
     }
 
@@ -55,5 +67,9 @@ public class CustomExamsAdapter extends FirebaseRecyclerAdapter<Exam, CustomExam
         holder.creditsTextView.setText(String.valueOf(model.getCredits()));
         Date date = new Date(model.getDueDate());
         holder.dueDateTextView.setText(String.valueOf(date).substring(0, 10));
+
+        holder.setOnClickListener((view, pos) -> {
+            //Open new fragment
+        });
     }
 }
