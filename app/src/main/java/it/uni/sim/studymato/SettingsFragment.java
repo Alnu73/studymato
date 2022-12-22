@@ -13,9 +13,8 @@ import com.google.firebase.auth.FirebaseUser;
 import java.util.Objects;
 
 public class SettingsFragment extends PreferenceFragmentCompat {
-    //TODO: put preferences in strings.xml
 
-    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+    private final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
 
     public SettingsFragment() {

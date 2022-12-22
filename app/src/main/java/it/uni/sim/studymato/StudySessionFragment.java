@@ -4,6 +4,7 @@ import static java.lang.Math.abs;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.activity.OnBackPressedCallback;
@@ -11,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.os.CountDownTimer;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,6 +31,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 import it.uni.sim.studymato.databinding.FragmentStudySessionBinding;
 import it.uni.sim.studymato.model.Exam;
@@ -62,11 +65,12 @@ public class StudySessionFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        SharedPreferences spref = PreferenceManager.getDefaultSharedPreferences(requireContext());
         binding = FragmentStudySessionBinding.inflate(inflater, container, false);
         // Inflate the layout for this fragment
         toggleBottomNavigationView();
-        studyInterval = 10000;   //from settings
-        breakInterval = 5000;
+        studyInterval = TimeUnit.MINUTES.toMillis(spref.getLong(getString(R.string.study_duration), 10000));
+        breakInterval = TimeUnit.MINUTES.toMillis(spref.getLong(getString(R.string.break_duration), 5000));
         currentInterval = StudyIntervals.STUDY;
         binding.breakAndResumeButton.setEnabled(false);
         setupTimer(studyInterval);
