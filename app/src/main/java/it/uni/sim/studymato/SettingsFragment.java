@@ -1,5 +1,6 @@
 package it.uni.sim.studymato;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -32,10 +33,13 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                         OnboardingPageFragment.COMPLETED_ONBOARDING
                         , pref.isChecked());
                 sharedPreferencesEditor.apply();
-                //TODO: When onboarding is over, set the switch back to unchecked
                 return true;
             }
         });
+        SharedPreferences onbPref = PreferenceManager.getDefaultSharedPreferences(requireContext());
+        if (onbPref.getBoolean(OnboardingPageFragment.COMPLETED_ONBOARDING, true)) {
+            pref.setChecked(false);
+        }
 
     }
 
