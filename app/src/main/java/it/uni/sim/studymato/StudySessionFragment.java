@@ -73,7 +73,7 @@ public class StudySessionFragment extends Fragment {
         binding = FragmentStudySessionBinding.inflate(inflater, container, false);
         // Inflate the layout for this fragment
         toggleBottomNavigationView();
-        studyInterval = 5000; //TimeUnit.MINUTES.toMillis(spref.getLong(getString(R.string.study_duration), 10000));
+        studyInterval = TimeUnit.MINUTES.toMillis(spref.getLong(getString(R.string.study_duration), 10000));
         breakInterval = TimeUnit.MINUTES.toMillis(spref.getLong(getString(R.string.break_duration), 5000));
         currentInterval = StudyIntervals.STUDY;
         binding.breakAndResumeButton.setEnabled(false);
