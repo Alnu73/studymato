@@ -9,6 +9,8 @@ import android.os.Bundle;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.Fragment;
 
 import android.os.CountDownTimer;
@@ -32,6 +34,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import it.uni.sim.studymato.databinding.FragmentStudySessionBinding;
 import it.uni.sim.studymato.model.Exam;
@@ -42,6 +45,7 @@ public class StudySessionFragment extends Fragment {
     FragmentStudySessionBinding binding = null;
     private final FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
     private final DatabaseReference ref = mDatabase.getReference();
+    private final static AtomicInteger incrId = new AtomicInteger(0);
 
     private CountDownTimer tomatoTimer;
     private long studyInterval;
@@ -69,7 +73,7 @@ public class StudySessionFragment extends Fragment {
         binding = FragmentStudySessionBinding.inflate(inflater, container, false);
         // Inflate the layout for this fragment
         toggleBottomNavigationView();
-        studyInterval = TimeUnit.MINUTES.toMillis(spref.getLong(getString(R.string.study_duration), 10000));
+        studyInterval = 5000; //TimeUnit.MINUTES.toMillis(spref.getLong(getString(R.string.study_duration), 10000));
         breakInterval = TimeUnit.MINUTES.toMillis(spref.getLong(getString(R.string.break_duration), 5000));
         currentInterval = StudyIntervals.STUDY;
         binding.breakAndResumeButton.setEnabled(false);
@@ -131,9 +135,11 @@ public class StudySessionFragment extends Fragment {
                     long mins = numberOfStudyIntervals*(studyInterval);
                     binding.progressTextView.setText(String.format("You studied %d minutes", mins));
                     binding.statusTextView.setText("Your timer has ended! You may take a break.");
+                    fireIntervalNotification("You finished a study interval", "Take a break!");
                 }
                 else {
                     binding.statusTextView.setText("Time to resume!");
+                    fireIntervalNotification("You finished a break interval", "Time to resume!");
                 }
                 binding.breakAndResumeButton.setEnabled(true);
             }
@@ -231,6 +237,16 @@ public class StudySessionFragment extends Fragment {
 
             }
         });
+    }
+
+    private void fireIntervalNotification(String textTitle, String textContent) {
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(requireContext());
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(requireContext(), getString(R.string.channel_id))
+                .setSmallIcon(R.drawable.ic_notification_icon_foreground)
+                .setContentTitle(textTitle)
+                .setContentText(textContent)
+                .setPriority(NotificationCompat.PRIORITY_HIGH);
+        notificationManager.notify(incrId.incrementAndGet(), builder.build());
     }
 
     private void closeWindow() {

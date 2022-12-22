@@ -20,6 +20,10 @@
     <string name="confirm">Confirm</string>
     <string name="exams_to_do">Exams to do</string>
 
+    <string name="channel_id">studymato_notifications</string>
+    <string name="channel_name">studymato_notifications</string>
+    <string name="channel_description">Notifications for studymato</string>
+
     <string name="onboarding_completed"><xliff:g id="onboarding_completed">false</xliff:g></string>
     <string name="study_duration"><xliff:g id="study_duration">20</xliff:g></string>
     <string name="break_duration"><xliff:g id="break_duration">5</xliff:g></string>
