@@ -15,6 +15,10 @@ import java.util.Objects;
 import it.uni.sim.studymato.onboarding.OnboardingPageFragment;
 
 public class SettingsFragment extends PreferenceFragmentCompat {
+    //TODO: put preferences in strings.xml
+    public static final String STUDY_DURATION = "study_duration";
+    public static final String BREAK_DURATION = "break_duration";
+
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
 
@@ -25,13 +29,15 @@ public class SettingsFragment extends PreferenceFragmentCompat {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        SharedPreferences.Editor sharedPreferencesEditor =
+                PreferenceManager.getDefaultSharedPreferences(requireContext()).edit();
         SwitchPreferenceCompat switchPref = findPreference("onboarding");
         Preference delAccountPref = findPreference("logout");
         Preference logoutPref = findPreference("delete_account");
+        Preference tomatoDurationPref = findPreference("studytomato");
+        Preference breakDurationPref = findPreference("breaktomato");
 
         Objects.requireNonNull(switchPref).setOnPreferenceChangeListener((preference, newValue) -> {
-            SharedPreferences.Editor sharedPreferencesEditor =
-                    PreferenceManager.getDefaultSharedPreferences(requireContext()).edit();
             sharedPreferencesEditor.putBoolean(
                     OnboardingPageFragment.COMPLETED_ONBOARDING
                     , switchPref.isChecked());
@@ -53,6 +59,17 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             FirebaseAuth.getInstance().signOut();
             return true;
         });
+
+        Objects.requireNonNull(tomatoDurationPref).setOnPreferenceChangeListener((preference, newValue) -> {
+            sharedPreferencesEditor.putLong(STUDY_DURATION, (Long) newValue);
+            return true;
+        });
+
+        Objects.requireNonNull(breakDurationPref).setOnPreferenceChangeListener((preference, newValue) -> {
+            sharedPreferencesEditor.putLong(BREAK_DURATION, (Long) newValue);
+            return true;
+        });
+
 
         //TODO: Disable notifications
         toggleOnboardingSetting(switchPref);
