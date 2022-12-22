@@ -68,7 +68,20 @@ public class ExamsFragment extends Fragment {
                 .setQuery(examsRef, Exam.class)
                 .build();
 
-        adapter = new CustomExamsAdapter(options);
+        adapter = new CustomExamsAdapter(options, (view, position) -> {
+            Exam clickedExam = adapter.getItem(position);
+            ExamStatsFragment examStatsFragment = new ExamStatsFragment();
+            Bundle args = new Bundle();
+            args.putString("examName", clickedExam.getName());
+            args.putInt("examCredits", clickedExam.getCredits());
+            args.putLong("examDueDate", clickedExam.getDueDate());
+            examStatsFragment.setArguments(args);
+
+            requireActivity().getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.main_nav_host_fragment, examStatsFragment, "examStatsFragment")
+                    .addToBackStack(null)
+                    .commit();
+        });
         rv.setAdapter(adapter);
 
         checkExamExpiration();

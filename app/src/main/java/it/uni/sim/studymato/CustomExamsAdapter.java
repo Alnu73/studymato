@@ -19,6 +19,12 @@ import java.util.Date;
 import it.uni.sim.studymato.model.Exam;
 
 public class CustomExamsAdapter extends FirebaseRecyclerAdapter<Exam, CustomExamsAdapter.ViewHolder> {
+    private final OnItemClickListener listener;
+
+    public interface OnItemClickListener {
+        void onItemClick(View view, int position);
+    }
+
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
@@ -32,31 +38,20 @@ public class CustomExamsAdapter extends FirebaseRecyclerAdapter<Exam, CustomExam
             examTextView = view.findViewById(R.id.examTextView);
             creditsTextView = view.findViewById(R.id.creditsTextView);
             dueDateTextView = view.findViewById(R.id.dueDateTextView);
-
-            view.setOnClickListener(v -> mClickListener.onItemClick(v, getAbsoluteAdapterPosition()));
         }
 
         public TextView getExamTextView() {
             return examTextView;
         }
 
-        private ViewHolder.ClickListener mClickListener;
-
-        public ClickListener getmClickListener() {
-            return mClickListener;
-        }
-
-        public interface ClickListener {
-            void onItemClick(View view, int position);
-        }
-
-        public void setOnClickListener(ViewHolder.ClickListener clickListener){
-            mClickListener = clickListener;
+        public void bind(final OnItemClickListener listener) {
+            itemView.setOnClickListener(view -> listener.onItemClick(view, getAbsoluteAdapterPosition()));
         }
     }
 
-    public CustomExamsAdapter(FirebaseRecyclerOptions<Exam> options) {
+    public CustomExamsAdapter(FirebaseRecyclerOptions<Exam> options, OnItemClickListener listener) {
         super(options);
+        this.listener = listener;
     }
 
     @NonNull
@@ -73,21 +68,6 @@ public class CustomExamsAdapter extends FirebaseRecyclerAdapter<Exam, CustomExam
         holder.creditsTextView.setText(String.valueOf(model.getCredits()));
         Date date = new Date(model.getDueDate());
         holder.dueDateTextView.setText(String.valueOf(date).substring(0, 10));
-
-        holder.setOnClickListener((view, pos) -> {
-            //Open new fragment
-            //TODO: Da rivedere!
-            ExamStatsFragment examStatsFragment = new ExamStatsFragment();
-            Bundle args = new Bundle();
-            args.putString("examName",model.getName());
-            args.putInt("examCredits", model.getCredits());
-            args.putLong("examCredits", model.getDueDate());
-            examStatsFragment.setArguments(args);
-            AppCompatActivity activity = (AppCompatActivity) view.getContext();
-            activity.getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.main_nav_host_fragment, examStatsFragment, "studySessionFragment")
-                    .addToBackStack(null)
-                    .commit();
-        });
+        holder.bind(listener);
     }
 }
