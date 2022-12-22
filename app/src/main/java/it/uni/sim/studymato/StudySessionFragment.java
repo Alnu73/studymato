@@ -128,7 +128,7 @@ public class StudySessionFragment extends Fragment {
             public void onFinish() {
                 if (currentInterval == StudyIntervals.STUDY) {
                     numberOfStudyIntervals += 1;
-                    long mins = numberOfStudyIntervals*(studyInterval / 1000);
+                    long mins = numberOfStudyIntervals*(studyInterval);
                     binding.progressTextView.setText(String.format("You studied %d minutes", mins));
                     binding.statusTextView.setText("Your timer has ended! You may take a break.");
                 }
