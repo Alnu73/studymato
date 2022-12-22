@@ -28,11 +28,13 @@ import it.uni.sim.studymato.onboarding.OnboardingPageFragment;
 public class MainActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
+    private SharedPreferences sharedPreferences;
     ActivityMainBinding binding = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         mAuth = FirebaseAuth.getInstance();
         binding = ActivityMainBinding.inflate(getLayoutInflater());
@@ -64,8 +66,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void checkAndStartOnboarding() {
-        SharedPreferences sharedPreferences =
-                PreferenceManager.getDefaultSharedPreferences(this);
         // Check if we need to display our OnboardingSupportFragment
         if (!sharedPreferences.getBoolean(getString(R.string.onboarding_completed), false)) {
             // The user hasn't seen the OnboardingSupportFragment yet, so show it

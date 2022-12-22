@@ -26,25 +26,34 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         super.onCreate(savedInstanceState);
         SharedPreferences.Editor sharedPreferencesEditor =
                 PreferenceManager.getDefaultSharedPreferences(requireContext()).edit();
-        SwitchPreferenceCompat switchPref = findPreference("onboarding");
+        SwitchPreferenceCompat switchOnboardingPref = findPreference("onboarding");
+        SwitchPreferenceCompat switchNotificationPref = findPreference("notifications");
         Preference delAccountPref = findPreference("logout");
         Preference logoutPref = findPreference("delete_account");
         Preference tomatoDurationPref = findPreference("studytomato");
         Preference breakDurationPref = findPreference("breaktomato");
 
-        Objects.requireNonNull(switchPref).setOnPreferenceChangeListener((preference, newValue) -> {
-            sharedPreferencesEditor.putBoolean(getString(R.string.onboarding_completed), switchPref.isChecked());
+        Objects.requireNonNull(switchOnboardingPref).setOnPreferenceChangeListener((preference, newValue) -> {
+            sharedPreferencesEditor.putBoolean(getString(R.string.onboarding_completed), switchOnboardingPref.isChecked());
+            sharedPreferencesEditor.apply();
+            return true;
+        });
+
+        Objects.requireNonNull(switchNotificationPref).setOnPreferenceChangeListener((preference, newValue) -> {
+            sharedPreferencesEditor.putBoolean(getString(R.string.disable_notifications), switchNotificationPref.isChecked());
             sharedPreferencesEditor.apply();
             return true;
         });
 
         Objects.requireNonNull(delAccountPref).setOnPreferenceClickListener(preference -> {
-            user.delete()
-                    .addOnCompleteListener(task -> {
-                        if (task.isSuccessful()) {
-                            Log.d("SessFragDel", "User account deleted.");
-                        }
-                    });
+            if (user != null) {
+                user.delete()
+                        .addOnCompleteListener(task -> {
+                            if (task.isSuccessful()) {
+                                Log.d("SessFragDel", "User account deleted.");
+                            }
+                        });
+            }
             return true;
         });
 
@@ -65,8 +74,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             return true;
         });
 
-        //TODO: Disable notifications
-        toggleOnboardingSetting(switchPref);
+        toggleOnboardingSetting(switchOnboardingPref);
 
     }
 
