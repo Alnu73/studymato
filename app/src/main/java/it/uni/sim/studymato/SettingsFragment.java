@@ -1,20 +1,22 @@
 package it.uni.sim.studymato;
 
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-
-import androidx.annotation.NonNull;
+import android.util.Log;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.SwitchPreferenceCompat;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.Objects;
 
 import it.uni.sim.studymato.onboarding.OnboardingPageFragment;
 
 public class SettingsFragment extends PreferenceFragmentCompat {
+    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
 
     public SettingsFragment() {
         // Required empty public constructor
@@ -23,19 +25,41 @@ public class SettingsFragment extends PreferenceFragmentCompat {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        SwitchPreferenceCompat pref = findPreference("onboarding");
-        Objects.requireNonNull(pref).setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-            @Override
-            public boolean onPreferenceChange(@NonNull Preference preference, Object newValue) {
-                SharedPreferences.Editor sharedPreferencesEditor =
-                        PreferenceManager.getDefaultSharedPreferences(requireContext()).edit();
-                sharedPreferencesEditor.putBoolean(
-                        OnboardingPageFragment.COMPLETED_ONBOARDING
-                        , pref.isChecked());
-                sharedPreferencesEditor.apply();
-                return true;
-            }
+        SwitchPreferenceCompat switchPref = findPreference("onboarding");
+        Preference delAccountPref = findPreference("logout");
+        Preference logoutPref = findPreference("delete_account");
+
+        Objects.requireNonNull(switchPref).setOnPreferenceChangeListener((preference, newValue) -> {
+            SharedPreferences.Editor sharedPreferencesEditor =
+                    PreferenceManager.getDefaultSharedPreferences(requireContext()).edit();
+            sharedPreferencesEditor.putBoolean(
+                    OnboardingPageFragment.COMPLETED_ONBOARDING
+                    , switchPref.isChecked());
+            sharedPreferencesEditor.apply();
+            return true;
         });
+
+        Objects.requireNonNull(delAccountPref).setOnPreferenceClickListener(preference -> {
+            user.delete()
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            Log.d("SessFragDel", "User account deleted.");
+                        }
+                    });
+            return true;
+        });
+
+        Objects.requireNonNull(logoutPref).setOnPreferenceClickListener(preference -> {
+            FirebaseAuth.getInstance().signOut();
+            return true;
+        });
+
+        //TODO: Disable notifications
+        toggleOnboardingSetting(switchPref);
+
+    }
+
+    private void toggleOnboardingSetting(SwitchPreferenceCompat pref) {
         SharedPreferences onbPref = PreferenceManager.getDefaultSharedPreferences(requireContext());
         if (onbPref.getBoolean(OnboardingPageFragment.COMPLETED_ONBOARDING, true)) {
             pref.setChecked(false);
